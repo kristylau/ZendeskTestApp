@@ -13,9 +13,9 @@ jobs:
 
       - name: Add ZAT Config
         run: |
-          echo $ZAT >> .zat
+          echo $ZAT_DEV >> .zat
         env:
-          ZAT: ${{ secrets.ZAT }}
+          ZAT_DEV: ${{ secrets.ZAT_DEV }}
 
       - name: ZAT Deploy
         uses: zendesk/zat-deploy@master
