@@ -1,0 +1,21 @@
+name: Deploy Zendesk App to Dev
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: zendesk/checkout@v2
+
+      - name: Add ZAT Config
+        run: |
+          echo $ZAT_UAT >> .zat
+        env:
+          ZAT_UAT: ${{ secrets.ZAT_UAT }}
+
+      - name: ZAT Deploy
+        uses: zendesk/zat-deploy@master
