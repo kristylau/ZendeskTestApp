@@ -1,4 +1,4 @@
-name: Deploy Zendesk App to Dev
+name: Deploy Zendesk App to UAT
 
 on:
   push:
