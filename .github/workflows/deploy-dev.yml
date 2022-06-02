@@ -16,13 +16,11 @@ jobs:
           ZAT_DEV: ${{ secrets.ZAT_DEV }}
         run: |
           echo $ZAT_DEV >> .zat
-          echo `pwd`
 
       - name: My Test
         run: |
-          echo `pwd`
-          echo `ls -la`
-          echo `cat .zat`
+          pwd
+          ls -la
 
       - name: ZAT Deploy
         uses: zendesk/zat-deploy@master
