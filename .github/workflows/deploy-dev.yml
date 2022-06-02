@@ -18,5 +18,9 @@ jobs:
           echo $ZAT_DEV >> .zat
           echo `pwd`
 
+      - name: My Test
+        run: |
+          echo `pwd`
+          
       - name: ZAT Deploy
         uses: zendesk/zat-deploy@master
