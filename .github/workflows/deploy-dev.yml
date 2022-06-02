@@ -21,7 +21,8 @@ jobs:
       - name: My Test
         run: |
           echo `pwd`
-          ls -la
+          echo `ls -la`
+          echo `cat .zat`
 
       - name: ZAT Deploy
         uses: zendesk/zat-deploy@master
