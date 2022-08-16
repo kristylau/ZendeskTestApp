@@ -12,10 +12,15 @@ jobs:
       - uses: zendesk/checkout@v2
 
       - name: Add ZAT Config
-        run: |
-          echo $ZAT_DEV >> .zat
         env:
           ZAT_DEV: ${{ secrets.ZAT_DEV }}
+        run: |
+          echo $ZAT_DEV >> .zat
+
+      - name: My Test
+        run: |
+          pwd
+          ls -la
 
       - name: ZAT Deploy
         uses: zendesk/zat-deploy@master
