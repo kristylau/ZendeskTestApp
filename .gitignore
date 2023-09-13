@@ -11,10 +11,7 @@
 .history
 tmp
 node_modules
-#.zat
-deploy.sh
-deploy.txt
-Jenkinsfile_sample
+.zat*
 
 
 
