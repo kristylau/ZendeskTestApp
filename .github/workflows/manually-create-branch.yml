@@ -1,0 +1,64 @@
+name: Manually create branches for the next sprint
+
+on: 
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-branches:
+    runs-on: ubuntu-latest
+    env:
+      # DEV_BRANCH_PREFIX: dev-sprint-
+      UAT_BRANCH_PREFIX: uat-sprint-
+      REL_BRANCH_PREFIX: release-sprint-      
+      SOURCE_BRANCH_PREFIX: release-sprint-     
+    steps:
+      - run: echo "Start creating new uat and release branches..."
+
+      - name: Checkout code from main branch
+        id: step_1
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Get current sprint no from the release branch
+        id: step_2
+        shell: bash
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>" 
+          
+          ## Get current sprint no
+          git fetch origin refs/heads/$REL_BRANCH_PREFIX*:refs/remotes/origin/$REL_BRANCH_PREFIX*
+          # echo -e "Show git branch...\n`git branch -a`"
+          export CURRENT_SPRINT_NO=`git branch -a | grep $REL_BRANCH_PREFIX | cut -d'-' -f 3 | sort -n | tail -1`
+          echo "Current Sprint No: $CURRENT_SPRINT_NO"
+          echo "CURRENT_SPRINT_NO=$CURRENT_SPRINT_NO" >> $GITHUB_ENV
+
+      - name: Create branches
+        run: |
+          export NEXT_SPRINT_NO=`expr ${{ env.CURRENT_SPRINT_NO }} + 1`           
+          # export NEW_DEV_BRANCH=$DEV_BRANCH_PREFIX$NEXT_SPRINT_NO
+          export NEW_UAT_BRANCH=$UAT_BRANCH_PREFIX$NEXT_SPRINT_NO
+          export NEW_REL_BRANCH=$REL_BRANCH_PREFIX$NEXT_SPRINT_NO
+          
+          ## Debug
+          # echo "New dev branch: $NEW_DEV_BRANCH"
+          echo "New uat branch: $NEW_UAT_BRANCH"
+          echo "New release branch: $NEW_REL_BRANCH"  
+          
+          ## Create new dev branch
+          # git branch $NEW_DEV_BRANCH main
+          # git push origin $NEW_DEV_BRANCH
+          ## Create new uat branch
+          git branch $NEW_UAT_BRANCH main
+          git push origin $NEW_UAT_BRANCH  
+          ## Create new release branch
+          git branch $NEW_REL_BRANCH main
+          git push origin $NEW_REL_BRANCH
+
+          echo "Branches are created."
+    
